@@ -21,19 +21,23 @@ module.exports = {
 
     updateBin: (req, res) => {
         const { id } = req.params;
+        const shelfId = id[0];
+        const binNum = id[1];
         const { name, price } = req.body;
         req.app
             .get("db")
-            .update_bin([id, name, price])
+            .update_bin([name, price, shelfId, binNum])
             .then(result => res.status(200).json(result))
             .catch(console.log);
     },
 
     deleteBin: (req, res) => {
         const { id } = req.params;
+        const shelfId = id[0];
+        const binNum = id[1];
         req.app
             .get("db")
-            .delete_bin([id])
+            .delete_bin([shelfId, binNum])
             .then(result => res.status(200).json())
             .catch(console.log);
     },
