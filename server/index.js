@@ -11,6 +11,7 @@ app.use(json());
 
 require("dotenv").config();
 
+//connect to db
 massive(process.env.CONNECTION_STRING).then(db => {
     app.set("db", db);
 });

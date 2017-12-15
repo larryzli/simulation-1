@@ -12,9 +12,11 @@ module.exports = {
 
     getBin: (req, res) => {
         const { id } = req.params;
+        const shelfId = id[0];
+        const binNum = id[1];
         req.app
             .get("db")
-            .get_bin_id([id])
+            .get_bin_id([shelfId, binNum])
             .then(result => res.status(200).json(result))
             .catch(console.log);
     },

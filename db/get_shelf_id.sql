@@ -1,1 +1,1 @@
-SELECT * FROM items WHERE shelf = $1;
+SELECT * FROM items WHERE shelf = $1 ORDER BY bin_number;
