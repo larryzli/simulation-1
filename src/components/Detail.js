@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import DetailHeader from "./DetailHeader";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 export default class Detail extends Component {
@@ -9,26 +9,42 @@ export default class Detail extends Component {
 
         this.state = {
             nameInput: "",
-            priceInput: 0,
+            priceInput: "",
+            canEdit: false,
             id: this.props.match.params.id,
             item: []
         };
+
+        this.deleteItem = this.deleteItem.bind(this);
+        this.priceChange = this.priceChange.bind(this);
+        this.nameChange = this.nameChange.bind(this);
     }
     deleteItem() {
         axios
             .delete(`/api/bin/${this.state.id}`)
             .then(result => {
-                this.setState({
-                    item: result.data
-                });
+                this.props.history.push(`/bins/${this.state.id[0]}`);
             })
             .catch(console.log);
+    }
+    // updateItem() {
+    //     axios.put(`/api/bin/${this.state.id}`, {name: this.state.nameInput, price: this.state.priceInput}).then()
+    // }
+    priceChange(event) {
+        this.setState({
+            priceInput: event.target.value
+        });
+    }
+    nameChange(event) {
+        this.setState({
+            nameInput: event.target.value
+        });
     }
     componentDidMount() {
         axios.get(`/api/bin/${this.state.id}`).then(result => {
             this.setState({
-                nameInput: result.data.name,
-                priceInput: result.data.price,
+                nameInput: result.data[0].name,
+                priceInput: result.data[0].price,
                 item: result.data
             });
         });
@@ -44,12 +60,20 @@ export default class Detail extends Component {
                     <img src="" alt="" />
                     Name:{" "}
                     <input
-                        // value={this.state.nameInput}
+                        onChange={this.nameChange}
+                        value={this.state.nameInput}
                         type="text"
                         name=""
                         id=""
                     />
-                    Price: <input type="text" name="" id="" />
+                    Price:{" "}
+                    <input
+                        onChange={this.priceChange}
+                        value={this.state.priceInput}
+                        type="text"
+                        name=""
+                        id=""
+                    />
                     <button>EDIT</button>
                     <button onClick={this.deleteItem}>DELETE</button>
                 </div>
